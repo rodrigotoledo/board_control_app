@@ -52,9 +52,8 @@ Join our community of developers creating universal apps.
 
 TODO:
 
-- react config using env
-- animations with react native reanimated
+- Mutations to destroy
+- Sign UP Screen
 - datetime picker
 - CRUD with tanstack/forms - With Image and file to api
-- Mutations to destroy
 - Understand how works drawer
