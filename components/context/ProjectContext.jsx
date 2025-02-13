@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react';
+import {Alert} from 'react-native';
 import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from '../../axiosConfig';
 
@@ -20,7 +21,7 @@ export const ProjectProvider = ({ children }) => {
   });
 
   const projectMutation = useMutation({
-    mutationFn: async ({ projectId }: { projectId: string }) => {
+    mutationFn: async ({projectId}) => {
       const response = await axios.patch(`/projects/${projectId}`);
       return response.data;
     },
@@ -29,7 +30,43 @@ export const ProjectProvider = ({ children }) => {
     },
   });
 
-  const completeProject = (project: any) => {
+  const destroyMutation = useMutation({
+    mutationFn: ({projectId}) => {
+      return new Promise((resolve, reject) => {
+        Alert.alert(
+          'Are you sure?',
+          'This action cannot be undone.',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => reject('Canceled'),
+              style: 'cancel',
+            },
+            {
+              text: 'Delete',
+              onPress: () => {
+                axios
+                  .delete(`/projects/${projectId}`)
+                  .then(response => resolve(response.data))
+                  .catch(error => reject(error));
+              },
+              style: 'destructive',
+            },
+          ],
+          {cancelable: true},
+        );
+      });
+    },
+    onSuccess: data => {
+      queryClient.invalidateQueries({queryKey: ['projects']});
+    },
+  });
+
+  const destroyProject = project => {
+    destroyMutation.mutate({projectId: project.id});
+  };
+
+  const completeProject = (project) => {
     projectMutation.mutate({ projectId: project.id });
   };
 
@@ -60,10 +97,11 @@ export const ProjectProvider = ({ children }) => {
       isLoadingProjects: isLoading,
       refetchProjects: refetch,
       completeProject,
+      destroyProject,
       completedProjectCount,
       projectsColor: getCompletionColor,
     }),
-    [data, isLoading, refetch, projectMutation],
+    [data, isLoading, refetch, projectMutation, destroyMutation],
   );
 
   return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;

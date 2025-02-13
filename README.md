@@ -52,8 +52,7 @@ Join our community of developers creating universal apps.
 
 TODO:
 
-- Mutations to destroy
+- datetime picker for scheduled_at
+- CRUD with React native paper - With Image and file to api
 - Sign UP Screen
-- datetime picker
-- CRUD with tanstack/forms - With Image and file to api
 - Understand how works drawer

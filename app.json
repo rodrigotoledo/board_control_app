@@ -1,7 +1,7 @@
 {
   "expo": {
     "extra": {
-      "API_URL": "https://2bnp6o-ip-45-71-76-107.tunnelmole.net/api"
+      "API_URL": "http://fqcuw3-ip-45-71-76-107.tunnelmole.net/api"
     },
     "name": "board_control_app",
     "slug": "board_control_app",

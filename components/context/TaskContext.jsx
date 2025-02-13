@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react';
+import {Alert} from 'react-native';
 import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from '../../axiosConfig';
 
@@ -20,7 +21,7 @@ export const TaskProvider = ({ children }) => {
   });
 
   const taskMutation = useMutation({
-    mutationFn: async ({ taskId }: { taskId: string }) => {
+    mutationFn: async ({ taskId }) => {
       const response = await axios.patch(`/tasks/${taskId}`);
       return response.data;
     },
@@ -29,7 +30,43 @@ export const TaskProvider = ({ children }) => {
     },
   });
 
-  const completeTask = (task: any) => {
+  const destroyMutation = useMutation({
+    mutationFn: ({taskId}) => {
+      return new Promise((resolve, reject) => {
+        Alert.alert(
+          'Are you sure?',
+          'This action cannot be undone.',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => reject('Canceled'),
+              style: 'cancel',
+            },
+            {
+              text: 'Delete',
+              onPress: () => {
+                axios
+                  .delete(`/tasks/${taskId}`)
+                  .then(response => resolve(response.data))
+                  .catch(error => reject(error));
+              },
+              style: 'destructive',
+            },
+          ],
+          {cancelable: true},
+        );
+      });
+    },
+    onSuccess: data => {
+      queryClient.invalidateQueries({queryKey: ['tasks']});
+    },
+  });
+
+  const destroyTask = task => {
+    destroyMutation.mutate({taskId: task.id});
+  };
+
+  const completeTask = (task) => {
     taskMutation.mutate({ taskId: task.id });
   };
 
@@ -60,10 +97,11 @@ export const TaskProvider = ({ children }) => {
       isLoadingTasks: isLoading,
       refetchTasks: refetch,
       completeTask,
+      destroyTask,
       completedTaskCount,
       tasksColor: getCompletionColor,
     }),
-    [data, isLoading, refetch, taskMutation],
+    [data, isLoading, refetch, taskMutation, destroyMutation],
   );
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
