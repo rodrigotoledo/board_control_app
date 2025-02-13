@@ -10,7 +10,7 @@ const Projects = () => {
   const {projects, completeProject, isLoadingProjects, completedProjectCount, projectsColor, refetchProjects} = useProjectContext();
 
   return (
-    <SafeAreaView className='bg-gray-800'>
+    <SafeAreaView className='bg-gray-800 h-full'>
       <HeaderProjects title="List of Projects" />
       <ScrollView className="container my-2 bg-gray-900">
         <View className="mx-4 my-10">

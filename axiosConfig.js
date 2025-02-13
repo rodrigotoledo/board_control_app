@@ -1,7 +1,13 @@
+if (__DEV__) {
+  require('./ReactotronConfig');
+}
+import Constants from "expo-constants";
+
+console.tron.log(Constants.expoConfig.extra.API_URL);
+console.tron.log('aki')
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-axios.defaults.baseURL = 'https://6671-45-71-76-107.ngrok-free.app/api';
+axios.defaults.baseURL = Constants.expoConfig.extra.API_URL;
 axios.defaults.headers = {
   'Content-Type': 'application/json',
 };

@@ -10,7 +10,7 @@ const Tasks = () => {
   const {tasks, completeTask, isLoadingTasks, completedTaskCount, tasksColor, refetchTasks} = useTaskContext();
 
   return (
-    <SafeAreaView className='bg-gray-800'>
+    <SafeAreaView className='bg-gray-800 h-full'>
       <HeaderTasks title="List of Tasks" />
       <ScrollView className="container my-2 bg-gray-900">
         <View className="mx-4 my-10">

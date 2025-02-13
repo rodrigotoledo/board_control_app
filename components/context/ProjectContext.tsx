@@ -16,7 +16,7 @@ export const ProjectProvider = ({ children }) => {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchIntervalInBackground: true,
-    refetchInterval: 1000,
+    retry: 5
   });
 
   const projectMutation = useMutation({

@@ -13,7 +13,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. Start the app
 
    ```bash
-    npx expo start
+    npx expo start --clear
    ```
 
 In the output, you'll find options to open the app in a
@@ -30,6 +30,7 @@ You can start developing by editing the files inside the **app** directory. This
 When you're ready, run:
 
 ```bash
+watchman watch-del './board_control_app' ; watchman watch-project './board_control_app'
 npm run reset-project
 ```
 

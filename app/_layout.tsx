@@ -1,8 +1,7 @@
-import { Platform, View, Text } from 'react-native';
-
-if (Platform.OS !== 'web') {
-  require("../ReactotronConfig");
+if (__DEV__) {
+  require('../ReactotronConfig');
 }
+import { Platform, View, Text } from 'react-native';
 import '../global.css';
 import React, { useState, useEffect } from "react";
 import { Stack, useRouter } from "expo-router";
